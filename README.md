@@ -2,7 +2,7 @@
 Test code of the CVPR 2017 paper "A Deep Regression Architecture with Two-Stage Re-initialization for High Performance Facial Landmark Detection"
 
 Requirement
-  1. gerneral environment for Caffe on Linux OS: https://github.com/BVLC/caffe. 
+  1. general environment for Caffe on Linux OS: https://github.com/BVLC/caffe. 
   2. Matlab 2013a or later
   3. Cuda (if use nvidia gpu)
 
