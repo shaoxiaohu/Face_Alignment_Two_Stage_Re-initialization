@@ -19,7 +19,7 @@ The comparison of our method and other baseline methods on 300-W and AFLW datase
    
 ## Run the test code
 The models are saved at Baidu SkyDrive: <br>
-model for 300-W: link: http://pan.baidu.com/s/1gfxfv8J password：qzmi   <br>
+Model for 300-W: link: http://pan.baidu.com/s/1gfxfv8J password：qzmi   <br>
 Model for aflw:  link: http://pan.baidu.com/s/1cEk3Zw password：1j8e <br> 
 
 
