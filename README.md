@@ -1,5 +1,5 @@
 # Face-Alignment-with-Two-Stage-Re-initialization
-The test code of the CVPR 2017 paper **"A Deep Regression Architecture with Two-Stage Re-initialization for High Performance Facial Landmark Detection"**
+The test code of the CVPR 2017 paper **"A Deep Regression Architecture with Two-Stage Re-initialization for High Performance Facial Landmark Detection"**.
 
 <img src="figures/overflow.jpg" width = "70%" />
 
@@ -11,7 +11,7 @@ The test code of the CVPR 2017 paper **"A Deep Regression Architecture with Two-
 ## Introduction
    <img src="figures/diff-det.jpg" width = "50%" />
 <br>
-Since different face detectors often return various face bounding boxes with different scales and center shifts, it would be very useful if a facial landmark detection algorithm can produce robust results without depending so much on the face detection results. To explicitly deal with the initialization problem in regression based landmark detection methods, we present a deep regression architecture with two-stage re-initialization learned from end to end. Our proposed deep architecture is trained from end to end and obtains promising results using different kinds of unstable initialization. It also achieves superior performances over many competing algorithms.    
+Since different face detectors often return various face bounding boxes with different scales and center shifts, it would be very useful if a facial landmark detection algorithm can produce robust results without depending so much on the face detection results. To explicitly deal with the initialization problem in regression based landmark detection methods, we present a deep regression architecture with **two-stage re-initialization** learned from end to end. Our proposed deep architecture is trained from end to end and obtains promising results using different kinds of unstable initialization. It also achieves superior performances over many competing algorithms.    
 <br>
      
 <br>  
