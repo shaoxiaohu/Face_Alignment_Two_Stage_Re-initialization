@@ -4,24 +4,26 @@ The test code of the CVPR 2017 paper "A Deep Regression Architecture with Two-St
 <img src="figures/overflow.jpg">
 
 ## Requirement
-  1. general environment for Caffe platform on Linux OS: https://github.com/BVLC/caffe. 
+  1. General environment for Caffe platform on Linux OS: https://github.com/BVLC/caffe. 
   2. Matlab 2013a or later
   3. Cuda (if use nvidia gpu)
 
 ## Introduction
    <img src="figures/diff-det.jpg">
-    Since different face detectors often return various face bounding boxes with different scales and center shifts, it would be
-very useful if a facial landmark detection algorithm can produce robust results without depending so much on the face detection results. To explicitly deal with the initialization problem in regression based landmark detection methods, we present a deep regression  architecture with two-stage re-initialization learned from end to end. Our proposed deep architecture is trained
-from end to end and obtains promising results using different kinds of unstable initialization. It also achieves superior
-performances over many competing algorithms.
+Since different face detectors often return various face bounding boxes with different scales and center shifts, it would be very useful if a facial landmark detection algorithm can produce robust results without depending so much on the face detection results. To explicitly deal with the initialization problem in regression based landmark detection methods, we present a deep regression architecture with two-stage re-initialization learned from end to end. Our proposed deep architecture is trained from end to end and obtains promising results using different kinds of unstable initialization. It also achieves superior performances over many competing algorithms.
+
    
-  The comparison of our method and other baseline mehods on 300-W and AFLW dataset are shown as follows, more details can be found in the initial paper.
+  The comparison of our method and other baseline methods on 300-W and AFLW dataset are shown as follows, more details can be found in the initial paper.
    <img src="figures/300W-results.jpg">
    <img src="figures/aflw-results.jpg">
    
 ## Run the test code
-   The models are saved at Baidu SkyDrive, the 
-   When you had successfully built the CAFFE in this project and downloaded the models, just run the main_300w_part.m and main_aflw_part.m in the demo folder.
+The models are saved at Baidu SkyDrive:
+model for 300-W: link: http://pan.baidu.com/s/1gfxfv8J password：qzmi 
+Model for aflw:  link: http://pan.baidu.com/s/1cEk3Zw password：1j8e
+
+
+When you had successfully built the CAFFE in this project and downloaded the models, just run the main_300w_part.m and main_aflw_part.m in the demo folder.
    
   
 ### Acknowledgement
@@ -36,5 +38,4 @@ If you find this work useful, please cite as follows:
   year={2017}  
  }
 ```
- 
- 
+
