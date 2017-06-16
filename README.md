@@ -43,3 +43,12 @@ If you find this work useful, please cite as follows:
  }
 ```
 
+### Licence
+This code is distributed under MIT LICENSE.
+
+### Contact
+Please contact us if you have any problems during the demo running: <br> 
+
+Jiangjing Lv lvjiangjing@cigit.ac.cn <br>
+Xiaohu Shao shaoxiaohu@cigit.ac.cn <br>
+Junliang Xing jlxing@nlpr.ia.ac.cn <br>
