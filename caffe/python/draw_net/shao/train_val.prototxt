@@ -1,0 +1,1503 @@
+# Enter your network definition here.
+# Use Shift+Enter to update the visualization.
+name: "facial_point_net"
+layer {
+  name: "facial_point"
+  type: "FacialPointData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  
+  facial_point_data_param {
+    source: "train_list.txt"
+    batch_size: 128
+    new_height: 448
+    new_width: 448
+    is_color: true
+    shuffle: true
+    point_num: 68
+    ext_scale: 1.2
+    xy_mean: 0.03
+    xy_std: 0.03
+    wh_mean: 1.0
+    wh_std: 0.03
+    cal_trans_label: 2
+  }
+}
+
+layer {
+  name: "facial_point"
+  type: "FacialPointData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+  }
+  facial_point_data_param {
+    source: "test_list.txt"
+    batch_size: 128
+    new_height: 448
+    new_width: 448
+    is_color: true
+    point_num: 68
+    ext_scale: 1.2
+    use_face_rect: true
+    xy_mean: 0.00
+    xy_std: 0.00
+    wh_mean: 1.0
+    wh_std: 0.00
+    cal_trans_label: 2
+  }
+}
+
+layer {
+  name: "downsample_data"
+  type: "SubsamplePooling"
+  bottom: "data"
+  top: "downsample_data"
+  subsample_pooling_param {
+    output_H: 60
+    output_W: 60
+  }
+}
+################# net1 TCDCN's beginning #####################
+layer {
+  name: "net1_conv1"
+  type: "Convolution"
+  bottom: "downsample_data"
+  top: "net1_conv1"
+  param {
+	name: "tcdcn_conv1_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv1_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 20
+    pad: 0
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net1_PReLU1"
+  type: "PReLU"
+  bottom: "net1_conv1"
+  top: "net1_conv1"
+}
+
+layer {
+  name: "net1_pool1"
+  type: "Pooling"
+  bottom: "net1_conv1"
+  top: "net1_pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net1_conv2"
+  type: "Convolution"
+  bottom: "net1_pool1"
+  top: "net1_conv2"
+  param {
+	name: "tcdcn_conv2_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv2_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 48
+    pad: 0
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net1_PReLU2"
+  type: "PReLU"
+  bottom: "net1_conv2"
+  top: "net1_conv2"
+}
+layer {
+  name: "net1_pool2"
+  type: "Pooling"
+  bottom: "net1_conv2"
+  top: "net1_pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+layer {
+  name: "net1_conv3"
+  type: "Convolution"
+  bottom: "net1_pool2"
+  top: "net1_conv3"
+  param {
+	name: "tcdcn_conv3_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv3_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 0
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net1_PReLU3"
+  type: "PReLU"
+  bottom: "net1_conv3"
+  top: "net1_conv3"
+}
+layer {
+  name: "net1_pool3"
+  type: "Pooling"
+  bottom: "net1_conv3"
+  top: "net1_pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net1_conv4"
+  type: "Convolution"
+  bottom: "net1_pool3"
+  top: "net1_conv4"
+  param {
+	name: "tcdcn_conv4_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv4_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 80
+    pad: 0
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net1_PReLU4"
+  type: "PReLU"
+  bottom: "net1_conv4"
+  top: "net1_conv4"
+}
+layer {
+  name: "net1_fc5_1"
+  type: "InnerProduct"
+  bottom: "net1_conv4"
+  top: "net1_fc5"
+  param {
+	name: "tcdcn_fc5_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_fc5_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 512
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "net1_PReLU5"
+  type: "PReLU"
+  bottom: "net1_fc5"
+  top: "net1_fc5"
+}
+
+layer {
+  name: "net1_drop6"
+  type: "Dropout"
+  bottom: "net1_fc5"
+  top: "net1_fc5"
+  dropout_param {
+    dropout_ratio: 0.2
+  }
+}
+
+layer {
+  name: "net1_68point"
+  type: "InnerProduct"
+  bottom: "net1_fc5"
+  top: "net1_68point"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 136
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net1_loss"
+  type: "EuclideanLoss"
+  bottom: "net1_68point"
+  bottom: "label"
+  top: "net1_loss"
+  #hard_sample_param {
+  #  hard_ratio: 0.5
+  #}
+  loss_weight: 1
+}
+################# net 1 TCDCN's ending #########################
+
+################# net1_st's begining #####################
+layer {
+  name: "loc_reg_affine"
+  type: "InnerProduct"
+  bottom: "net1_68point"
+  top: "theta"
+  param {
+    lr_mult: 0.001
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+
+  inner_product_param {
+    num_output: 6
+    weight_filler {
+      type: "constant"
+      value: 0
+    }
+    bias_filler {
+      type: "file"
+      file: "bias_init.txt"
+    }
+  }
+}
+
+layer {
+  name: "theta_loss_affine"
+  type: "LocLoss"
+  bottom: "theta"
+  top: "theta_loss"
+  loc_loss_param {
+    threshold: 1.0
+  }
+  loss_weight: 0.01
+}
+################# net1_st's ending #####################
+
+################# net1 transformation's begining #############
+# tranform landmarks based on theta
+layer {
+  name: "net1_st_pts"
+  type: "PointTransformer"
+  bottom: "label"
+  bottom: "theta"
+  top: "net1_st_label"
+  pt_param {
+    transform_type: AFFINE
+    inv_trans: false
+   }
+  propagate_down: false
+  propagate_down: false
+}
+
+# transform data based on theta
+layer {
+  name: "net1_st_low_layer"
+  type: "SpatialTransformer"
+  bottom: "downsample_data"
+  bottom: "theta"
+  top: "net1_st_low_data"
+  st_param {
+      to_compute_dU: false
+      output_H: 60
+      output_W: 60
+    }
+}
+
+################# net1 transformation's ending #############
+
+################# net2 TCDCN's beginning #####################
+layer {
+  name: "net2_conv1"
+  type: "Convolution"
+  bottom: "net1_st_low_data"
+  top: "net2_conv1"
+  param {
+	name: "tcdcn_conv1_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv1_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 20
+    pad: 0
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net2_PReLU1"
+  type: "PReLU"
+  bottom: "net2_conv1"
+  top: "net2_conv1"
+}
+
+layer {
+  name: "net2_pool1"
+  type: "Pooling"
+  bottom: "net2_conv1"
+  top: "net2_pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net2_conv2"
+  type: "Convolution"
+  bottom: "net2_pool1"
+  top: "net2_conv2"
+  param {
+	name: "tcdcn_conv2_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv2_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 48
+    pad: 0
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net2_PReLU2"
+  type: "PReLU"
+  bottom: "net2_conv2"
+  top: "net2_conv2"
+}
+layer {
+  name: "net2_pool2"
+  type: "Pooling"
+  bottom: "net2_conv2"
+  top: "net2_pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net2_conv3"
+  type: "Convolution"
+  bottom: "net2_pool2"
+  top: "net2_conv3"
+  param {
+	name: "tcdcn_conv3_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv3_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 0
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net2_PReLU3"
+  type: "PReLU"
+  bottom: "net2_conv3"
+  top: "net2_conv3"
+}
+layer {
+  name: "net2_pool3"
+  type: "Pooling"
+  bottom: "net2_conv3"
+  top: "net2_pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net2_conv4"
+  type: "Convolution"
+  bottom: "net2_pool3"
+  top: "net2_conv4"
+  param {
+	name: "tcdcn_conv4_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_conv4_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 80
+    pad: 0
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net2_fc5_1"
+  type: "InnerProduct"
+  bottom: "net2_conv4"
+  top: "net2_fc5"
+  param {
+	name: "tcdcn_fc5_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "tcdcn_fc5_b"
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 512
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "net2_PReLU5"
+  type: "PReLU"
+  bottom: "net2_fc5"
+  top: "net2_fc5"
+}
+
+layer {
+  name: "net2_drop6"
+  type: "Dropout"
+  bottom: "net2_fc5"
+  top: "net2_fc5"
+  dropout_param {
+    dropout_ratio: 0.2
+  }
+}
+
+layer {
+  name: "net2_68point"
+  type: "InnerProduct"
+  bottom: "net2_fc5"
+  top: "net2_68point"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 136
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net2_loss"
+  type: "EuclideanLoss"
+  bottom: "net2_68point"
+  bottom: "net1_st_label"
+  top: "ne2_loss"
+  #hard_sample_param {
+  #  hard_ratio: 0.5
+  #}
+  loss_weight: 1
+}
+################# net 2 TCDCN's ending #########################
+
+#seperate all landmarks to 2 parts: inner and contour
+layer {
+  name: "seperate_points"
+  type: "Slice"
+  bottom: "net2_68point"
+  top: "net2_inner_point"
+  top: "net2_contour_point"
+  slice_param {
+    axis: 1
+    slice_point: 34
+  }
+}
+
+#seperate all landmarks to 2 parts: inner and contour
+layer {
+  name: "seperate_label"
+  type: "Slice"
+  bottom: "net1_st_label"
+  top: "net2_st_inner_label"
+  top: "net2_st_contour_label"
+  slice_param {
+    axis: 1
+    slice_point: 34
+  }
+}
+
+layer {
+  name: "net1_st_high_layer"
+  type: "SpatialTransformer"
+  bottom: "data"
+  bottom: "theta"
+  top: "net1_st_high_data"
+  st_param {
+      to_compute_dU: false
+      output_H: 224
+      output_W: 224
+    }
+}
+
+################# net 3_1 st's begining #########################
+layer {
+  name: "inner_loc_reg_affine"
+  type: "InnerProduct"
+  bottom: "net2_innter_point"
+  top: "inner_theta"
+  param {
+    lr_mult: 0.001
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+
+  inner_product_param {
+    num_output: 6
+    weight_filler {
+      type: "constant"
+      value: 0
+    }
+    bias_filler {
+      type: "file"
+      file: "bias_init.txt"
+    }
+  }
+}
+
+layer {
+  name: "inner_theta_loss_affine"
+  type: "LocLoss"
+  bottom: "inner_theta"
+  top: "inner_theta_loss"
+  loc_loss_param {
+    threshold: 1.0
+  }
+  loss_weight: 0.01
+}
+################# net 3_1 st's ending #########################
+################# net3_1 transformation's begining #############
+# tranform landmarks based on theta
+layer {
+  name: "net3_1_st_inner_label"
+  type: "PointTransformer"
+  bottom: "net2_st_innter_label"
+  bottom: "inner_theta"
+  top: "net3_1_st_inner_label"
+  pt_param {
+    transform_type: AFFINE
+    inv_trans: false
+   }
+  propagate_down: false
+  propagate_down: false
+}
+
+# transform data based on theta
+layer {
+  name: "net3_1_st_layer"
+  type: "SpatialTransformer"
+  bottom: "net1_st_high_data"
+  bottom: "inner_theta"
+  top: "net3_1_st_data"
+  st_param {
+      to_compute_dU: false
+      output_H: 224
+      output_W: 224
+    }
+}
+################# net3_1 transformation's ending #############
+
+################# net 3_2 st's begining #########################
+layer {
+  name: "contour_loc_reg_affine"
+  type: "InnerProduct"
+  bottom: "net2_contour_point"
+  top: "contour_theta"
+  param {
+    lr_mult: 0.001
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+
+  inner_product_param {
+    num_output: 6
+    weight_filler {
+      type: "constant"
+      value: 0
+    }
+    bias_filler {
+      type: "file"
+      file: "bias_init.txt"
+    }
+  }
+}
+
+layer {
+  name: "contour_theta_loss_crop"
+  type: "LocLoss"
+  bottom: "contour_theta"
+  top: "contour_theta_loss"
+  loc_loss_param {
+    threshold: 1.0
+  }
+  loss_weight: 0.01
+}
+
+################# net 3_2 st's ending #########################
+
+################# net3_2 transformation's begining #############
+# tranform landmarks based on theta
+layer {
+  name: "net3_2_st_contour_label"
+  type: "PointTransformer"
+  bottom: "net2_contour_label"
+  bottom: "contour_theta"
+  top: "net3_2_st_contour_label"
+  pt_param {
+    transform_type: AFFINE
+    inv_trans: false
+   }
+  propagate_down: false
+  propagate_down: false
+}
+
+# transform data based on theta
+layer {
+  name: "net3_2_st_layer"
+  type: "SpatialTransformer"
+  bottom: "net1_st_high_data"
+  bottom: "contour_theta"
+  top: "net3_2_st_data"
+  st_param {
+      to_compute_dU: false
+      output_H: 224
+      output_W: 224
+    }
+}
+################# net3_2 transformation's ending #############
+
+################# net 3_1 VGG's begining #########################
+layer {
+  name: "net3_1_conv1"
+  type: "Convolution"
+  bottom: "net3_1_st_data"
+  top: "net3_1_conv1"
+  param {
+	name: "vgg_conv1_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv1_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+#    pad: 3
+    kernel_size: 7
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_1_relu1"
+  type: "ReLU"
+  bottom: "net3_1_conv1"
+  top: "net3_1_conv1"
+}
+layer {
+  name: "net3_1_norm1"
+  type: "LRN"
+  bottom: "net3_1_conv1"
+  top: "net3_1_norm1"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0005
+    beta: 0.75
+    k: 2
+  }
+}
+layer {
+  name: "net3_1_pool1"
+  type: "Pooling"
+  bottom: "net3_1_norm1"
+  top: "net3_1_pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 3
+  }
+}
+layer {
+  name: "net3_1_conv2"
+  type: "Convolution"
+  bottom: "net3_1_pool1"
+  top: "net3_1_conv2"
+  param {
+	name: "vgg_conv2_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv2_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    kernel_size: 5
+#    pad: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_1_relu2"
+  type: "ReLU"
+  bottom: "net3_1_conv2"
+  top: "net3_1_conv2"
+}
+layer {
+  name: "net3_1_pool2"
+  type: "Pooling"
+  bottom: "net3_1_conv2"
+  top: "net3_1_pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net3_1_conv3"
+  type: "Convolution"
+  bottom: "net3_1_pool2"
+  top: "net3_1_conv3"
+  param {
+	name: "vgg_conv3_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv3_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_1_relu3"
+  type: "ReLU"
+  bottom: "net3_1_conv3"
+  top: "net3_1_conv3"
+}
+layer {
+  name: "net3_1_conv4"
+  type: "Convolution"
+  bottom: "net3_1_conv3"
+  top: "net3_1_conv4"
+  param {
+	name: "vgg_conv4_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv4_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_1_relu4"
+  type: "ReLU"
+  bottom: "net3_1_conv4"
+  top: "net3_1_conv4"
+}
+layer {
+  name: "net3_1_conv5"
+  type: "Convolution"
+  bottom: "net3_1_conv4"
+  top: "net3_1_conv5"
+  param {
+	name: "vgg_conv5_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv5_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_1_relu5"
+  type: "ReLU"
+  bottom: "net3_1_conv5"
+  top: "net3_1_conv5"
+}
+layer {
+  name: "net3_1_pool3"
+  type: "Pooling"
+  bottom: "net3_1_conv5"
+  top: "net3_1_pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 3
+  }
+}
+layer {
+  name: "net3_1_fc6"
+  type: "InnerProduct"
+  bottom: "net3_1_pool3"
+  top: "net3_1_fc6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net3_1_relu6"
+  type: "ReLU"
+  bottom: "net3_1_fc6"
+  top: "net3_1_fc6"
+}
+layer {
+  name: "net3_1_drop6"
+  type: "Dropout"
+  bottom: "net3_1_fc6"
+  top: "net3_1_fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "net3_1_fc7"
+  type: "InnerProduct"
+  bottom: "net3_1_fc6"
+  top: "net3_1_fc7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net3_1_relu7"
+  type: "ReLU"
+  bottom: "net3_1_fc7"
+  top: "net3_1_fc7"
+}
+layer {
+  name: "net3_1_drop7"
+  type: "Dropout"
+  bottom: "net3_1_fc7"
+  top: "net3_1_fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "net3_1_inner_point"
+  type: "InnerProduct"
+  bottom: "net3_1_fc7"
+  top: "net3_1_inner_point"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 34
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net3_1_loss"
+  type: "EuclideanLoss"
+  bottom: "net3_1_inner_point"
+  bottom: "net3_1_st_inner_label"
+  # loss_weight:10
+  top: "net3_1_loss"
+}
+################# net 3_1 VGG's ending #########################
+
+
+
+################# net 3_2 VGG's begining #########################
+layer {
+  name: "net3_2_conv1"
+  type: "Convolution"
+  bottom: "net3_2_st_data"
+  top: "net3_2_conv1"
+  param {
+	name: "vgg_conv1_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv1_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+#    pad: 3
+    kernel_size: 7
+    stride: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_2_relu1"
+  type: "ReLU"
+  bottom: "net3_2_conv1"
+  top: "net3_2_conv1"
+}
+layer {
+  name: "net3_2_norm1"
+  type: "LRN"
+  bottom: "net3_2_conv1"
+  top: "net3_2_norm1"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0005
+    beta: 0.75
+    k: 2
+  }
+}
+layer {
+  name: "net3_2_pool1"
+  type: "Pooling"
+  bottom: "net3_2_norm1"
+  top: "net3_2_pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 3
+  }
+}
+layer {
+  name: "net3_2_conv2"
+  type: "Convolution"
+  bottom: "net3_2_pool1"
+  top: "net3_2_conv2"
+  param {
+	name: "vgg_conv2_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv2_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    kernel_size: 5
+#    pad: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_2_relu2"
+  type: "ReLU"
+  bottom: "net3_2_conv2"
+  top: "net3_2_conv2"
+}
+layer {
+  name: "net3_2_pool2"
+  type: "Pooling"
+  bottom: "net3_2_conv2"
+  top: "net3_2_pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "net3_2_conv3"
+  type: "Convolution"
+  bottom: "net3_2_pool2"
+  top: "net3_2_conv3"
+  param {
+	name: "vgg_conv3_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv3_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_2_relu3"
+  type: "ReLU"
+  bottom: "net3_2_conv3"
+  top: "net3_2_conv3"
+}
+layer {
+  name: "net3_2_conv4"
+  type: "Convolution"
+  bottom: "net3_2_conv3"
+  top: "net3_2_conv4"
+  param {
+	name: "vgg_conv4_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv4_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_2_relu4"
+  type: "ReLU"
+  bottom: "net3_2_conv4"
+  top: "net3_2_conv4"
+}
+layer {
+  name: "net3_2_conv5"
+  type: "Convolution"
+  bottom: "net3_2_conv4"
+  top: "net3_2_conv5"
+  param {
+	name: "vgg_conv5_w"
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+	name: "vgg_conv5_b"
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.2
+    }
+  }
+}
+layer {
+  name: "net3_2_relu5"
+  type: "ReLU"
+  bottom: "net3_2_conv5"
+  top: "net3_2_conv5"
+}
+layer {
+  name: "net3_2_pool3"
+  type: "Pooling"
+  bottom: "net3_2_conv5"
+  top: "net3_2_pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 3
+  }
+}
+layer {
+  name: "net3_2_fc6"
+  type: "InnerProduct"
+  bottom: "net3_2_pool3"
+  top: "net3_2_fc6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net3_2_relu6"
+  type: "ReLU"
+  bottom: "net3_2_fc6"
+  top: "net3_2_fc6"
+}
+layer {
+  name: "net3_2_drop6"
+  type: "Dropout"
+  bottom: "net3_2_fc6"
+  top: "net3_2_fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "net3_2_fc7"
+  type: "InnerProduct"
+  bottom: "net3_2_fc6"
+  top: "net3_2_fc7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+
+layer {
+  name: "net3_2_relu7"
+  type: "ReLU"
+  bottom: "net3_2_fc7"
+  top: "net3_2_fc7"
+}
+layer {
+  name: "net3_2_drop7"
+  type: "Dropout"
+  bottom: "net3_2_fc7"
+  top: "net3_2_fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "net3_2_contour_point"
+  type: "InnerProduct"
+  bottom: "net3_2_fc7"
+  top: "net3_2_contour_point"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 102
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "net3_2_loss"
+  type: "EuclideanLoss"
+  bottom: "net3_2_contour_point"
+  bottom: "net3_2_st_contour_label"
+  # loss_weight:10
+  top: "net3_2_loss"
+}
+################# net 3_2 VGG's ending #########################
