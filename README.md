@@ -22,11 +22,11 @@ performances over many competing algorithms.
 ## Run the test code
    When you had successfully built the CAFFE in this project and downloaded the models, just run the main_300w_part.m and main_aflw_part.m in the demo folder.
    
-
+  
 ### Acknowledgement
-    The source code of st_layer.cpp and st_layer.cu are come from [here](https://github.com/christopher5106/last_caffe_with_stn) .
-
+  The source code of st_layer.cpp and st_layer.cu are come from [here](https://github.com/christopher5106/last_caffe_with_stn).
 ### Citation
+'''
 If you find this work useful, please cite as follows:
   @inproceedings{lv2017twostage,  
   title={A Deep Regression Architecture with Two-Stage Re-initialization for High Performance Facial Landmark Detection},  
@@ -34,5 +34,6 @@ If you find this work useful, please cite as follows:
   booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},  
   year={2017}  
  }
+ '''
  
  
