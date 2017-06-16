@@ -1,7 +1,7 @@
 # Face-Alignment-with-Two-Stage-Re-initialization
 The test code of the CVPR 2017 paper "A Deep Regression Architecture with Two-Stage Re-initialization for High Performance Facial Landmark Detection"
 
-<img src="figures/overflow.jpg">
+<img src="figures/overflow.jpg" width = "50%" />
 
 ## Requirement
   1. General environment for Caffe platform on Linux OS: https://github.com/BVLC/caffe. 
@@ -14,8 +14,8 @@ Since different face detectors often return various face bounding boxes with dif
 
 <br>   
 The comparison of our method and other baseline methods on 300-W and AFLW dataset are shown as follows, more details can be found in the initial paper.
-   <img src="figures/300W-results.jpg">
-   <img src="figures/aflw-results.jpg">
+   <img src="figures/300W-results.jpg" width = "50%" />
+   <img src="figures/aflw-results.jpg" width = "50%" />
    
 ## Run the test code
 The models are saved at Baidu SkyDrive: <br>
