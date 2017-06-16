@@ -20,6 +20,7 @@ performances over many competing algorithms.
    <img src="figures/aflw-results.jpg">
    
 ## Run the test code
+   The models are saved at Baidu SkyDrive, the 
    When you had successfully built the CAFFE in this project and downloaded the models, just run the main_300w_part.m and main_aflw_part.m in the demo folder.
    
   
