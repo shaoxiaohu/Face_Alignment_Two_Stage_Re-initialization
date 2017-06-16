@@ -1,7 +1,7 @@
 # Face-Alignment-with-Two-Stage-Re-initialization
 Test code of the CVPR 2017 paper "A Deep Regression Architecture with Two-Stage Re-initialization for High Performance Facial Landmark Detection"
 
-<img src="figures/overflow-stn.pdf">
+<img src="figures/overflow.jpg">
 
 ## Requirement
   1. general environment for Caffe on Linux OS: https://github.com/BVLC/caffe. 
