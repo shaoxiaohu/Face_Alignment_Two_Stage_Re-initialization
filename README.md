@@ -10,7 +10,7 @@ The test code of the CVPR 2017 paper "A Deep Regression Architecture with Two-St
 
 ## Introduction
    <img src="figures/diff-det.jpg" width = "50%" />
-Since different face detectors often return various face bounding boxes with different scales and center shifts, it would be very useful if a facial landmark detection algorithm can produce robust results without depending so much on the face detection results. To explicitly deal with the initialization problem in regression based landmark detection methods, we present a deep regression architecture with `two-stage re-initialization` learned from end to end. Our proposed deep architecture is trained from end to end and obtains promising results using different kinds of unstable initialization. It also achieves superior performances over many competing algorithms.  <br> 
+Since different face detectors often return various face bounding boxes with different scales and center shifts, it would be very useful if a facial landmark detection algorithm can produce robust results without depending so much on the face detection results. To explicitly deal with the initialization problem in regression based landmark detection methods, we present a deep regression architecture with `two-stage` `re-initialization` learned from end to end. Our proposed deep architecture is trained from end to end and obtains promising results using different kinds of unstable initialization. It also achieves superior performances over many competing algorithms.  <br> 
 
 <br>   
 The comparison of our method and other baseline methods on 300-W and AFLW dataset are shown as follows, more details can be found in the initial paper.
