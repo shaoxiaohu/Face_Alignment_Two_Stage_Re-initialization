@@ -49,6 +49,6 @@ This code is distributed under MIT LICENSE.
 ### Contact
 Please contact us if you have any problems during the demo running: <br> 
 
-Jiangjing Lv lvjiangjing at cigit dot ac dot cn <br>
+Jiangjing Lv lvjiangjing12 at gmail dot com <br>
 Xiaohu Shao shaoxiaohu at cigit dot ac dot cn <br>
 Junliang Xing jlxing at nlpr dot ia dot ac dot cn <br>
